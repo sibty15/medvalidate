@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Poppins } from "next/font/google";
 import './globals.css';
-import QueryProvider from "@/src/providers/query-provider";
+import QueryProvider from "../providers/query-provider";
 import { AuthProvider } from "@/hooks/useAuth";
 import Header from "./header";
 import Footer from "./footer";
