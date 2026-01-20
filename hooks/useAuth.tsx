@@ -108,7 +108,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 				.eq("id", user.id)
 				.single();
 
-			// If user doesn't exist, create it
+			// If user doesn't exist, create 
 			if (!existingUser && !fetchError) {
 				const { error: insertError } = await supabase.from("users").insert({
 					id: user.id,
