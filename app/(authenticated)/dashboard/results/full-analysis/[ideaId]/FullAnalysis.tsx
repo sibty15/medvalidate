@@ -14,8 +14,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 // import { getFullAnalysis } from "@/lib/api";
-import {  IdeaValidationResult } from "@/app/actions/getIdeaWithBasicResults";
-import { getFullIdeaAnalysisAI} from "@/app/actions/ai-actions/newIdeaAnalysisFull";
+import { IdeaValidationResult } from "@/app/actions/getIdeaWithBasicResults";
+import { getFullIdeaAnalysisAI } from "@/app/actions/ai-actions/newIdeaAnalysisFull";
 interface FullIdeaAnalysis {
   idea: StartupIdea;
   competitors: any[]
@@ -50,6 +50,7 @@ import {
 } from "lucide-react";
 import { StartupIdea } from "@/app/actions/fullIdeaAnalysis";
 import { getSingleIdeaResult } from "@/app/actions/ai-actions/ideaAnalysisCreationAndResults";
+import LoadingIcon from "@/components/icons/loading-icon";
 
 const getScoreColor = (score: number) => {
   if (score >= 80) return "text-emerald-600";
@@ -92,7 +93,7 @@ export function FullAnalysisPage({
     queryKey: ["full-analysis", ideaId],
     queryFn: () => {
       // let currentAnalysis = getFullAnalysis(ideaId)
-    
+
       return getFullIdeaAnalysisAI(ideaId);
     },
     enabled: !!ideaId,
@@ -138,161 +139,18 @@ export function FullAnalysisPage({
         </div>
       </div>
 
-      {summaryResult && (
-        <Card className="border-0 shadow-lg overflow-hidden bg-gradient-to-br from-slate-50 via-white to-slate-50">
-          <CardHeader className="pb-6 border-b border-slate-200/50">
-            <CardTitle className="text-xl flex items-center gap-2.5 font-bold">
-              <div className="p-2 bg-primary/10 rounded-lg">
-                <BarChart3 className="h-5 w-5 text-primary" />
-              </div>
-              High-level validation snapshot
-            </CardTitle>
-            <CardDescription className="mt-1 text-sm">
-              A quick summary of the scores, market view and risks generated for this idea.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6 pt-6">
-            <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
-              <div className="space-y-2 flex-1">
-                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Idea</p>
-                <p className="text-lg font-bold text-foreground">{summaryResult.title}</p>
-                <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground mt-2">
-                  <span className="font-medium">{summaryResult.category}</span>
-                  <div className="h-1 w-1 rounded-full bg-muted-foreground/30" />
-                  <Badge variant="secondary" className="bg-slate-200/50 text-slate-700 border-0 text-xs font-medium">
-                    {summaryResult.status === "completed" ? "✓ Completed analysis" : "Analyzing"}
-                  </Badge>
-                </div>
-                <p className="text-xs text-muted-foreground mt-3 font-medium">
-                  Submitted: <span className="text-slate-600">{summaryResult.submittedAt}</span>
-                  {summaryResult.completedAt && (
-                    <>
-                      <span className="mx-2">•</span>
-                      Completed: <span className="text-slate-600">{summaryResult.completedAt}</span>
-                    </>
-                  )}
-                </p>
-              </div>
-
-              {summaryResult.overallScore != null && (
-                <div className="flex items-center gap-4 md:flex-col md:items-end md:justify-start">
-                  <div
-                    className={`flex h-20 w-20 items-center justify-center rounded-2xl font-bold text-center shadow-md transition-transform hover:scale-105 ${getScoreBg(
-                      summaryResult.overallScore,
-                    )}`}
-                  >
-                    <span
-                      className={`text-4xl font-black ${getScoreColor(
-                        summaryResult.overallScore,
-                      )}`}
-                    >
-                      {summaryResult.overallScore}
-                    </span>
-                  </div>
-                  <div className="text-xs text-muted-foreground max-w-[180px]">
-                    <p className="font-semibold text-foreground text-sm">Overall validation score</p>
-                    <p className="mt-1 leading-relaxed">
-                      Higher scores indicate stronger fit on market, feasibility and innovation.
-                    </p>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {summaryResult.scores && (
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {[
-                  { label: "Market", value: summaryResult.scores.market, icon: TrendingUp },
-                  { label: "Competition", value: summaryResult.scores.competition, icon: Users },
-                  { label: "Feasibility", value: summaryResult.scores.feasibility, icon: Target },
-                  { label: "Innovation", value: summaryResult.scores.innovation, icon: Star },
-                ].map((score, i) => (
-                  <div key={i} className="p-4 rounded-2xl bg-white border border-slate-200 flex flex-col items-center gap-2.5 hover:shadow-md transition-shadow">
-                    <div className={`flex h-10 w-10 items-center justify-center rounded-xl font-bold transition-transform hover:scale-110 ${getScoreBg(score.value)}`}>
-                      <score.icon className={`h-5 w-5 ${getScoreColor(score.value)}`} />
-                    </div>
-                    <p
-                      className={`text-2xl font-bold ${getScoreColor(
-                        score.value,
-                      )}`}
-                    >
-                      {score.value}
-                    </p>
-                    <p className="text-xs font-medium text-muted-foreground">{score.label}</p>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {summaryResult.marketAnalysis && (
-              <div className="grid md:grid-cols-3 gap-4">
-                <div className="p-4 rounded-2xl bg-white border border-slate-200 text-center hover:shadow-md transition-shadow">
-                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Market size</p>
-                  <p className="font-bold text-lg mt-2 text-foreground">{summaryResult.marketAnalysis.marketSize}</p>
-                </div>
-                <div className="p-4 rounded-2xl bg-white border border-slate-200 text-center hover:shadow-md transition-shadow">
-                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Growth rate</p>
-                  <p className="font-bold text-lg mt-2 text-emerald-600">{summaryResult.marketAnalysis.growthRate}</p>
-                </div>
-                <div className="p-4 rounded-2xl bg-white border border-slate-200 text-center hover:shadow-md transition-shadow">
-                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Target potential</p>
-                  <p className="font-bold text-lg mt-2 text-foreground">{summaryResult.marketAnalysis.targetPotential}</p>
-                </div>
-              </div>
-            )}
-
-            <div className="grid md:grid-cols-2 gap-6">
-              {summaryResult.recommendations && summaryResult.recommendations.length > 0 && (
-                <div className="p-4 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200/50">
-                  <p className="font-bold text-sm mb-3 text-foreground flex items-center gap-2">
-                    <Star className="h-4 w-4 text-blue-600" />
-                    Top AI recommendations
-                  </p>
-                  <ul className="space-y-2">
-                    {summaryResult.recommendations.slice(0, 3).map((rec, i) => (
-                      <li key={i} className="text-sm text-muted-foreground flex gap-2">
-                        <span className="text-blue-600 font-bold flex-shrink-0">•</span>
-                        <span>{rec}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {summaryResult.risks && summaryResult.risks.length > 0 && (
-                <div className="p-4 rounded-2xl bg-gradient-to-br from-rose-50 to-red-50 border border-rose-200/50">
-                  <p className="font-bold text-sm mb-3 text-foreground flex items-center gap-2">
-                    <AlertTriangle className="h-4 w-4 text-rose-600" />
-                    Highlighted risks
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {summaryResult.risks.slice(0, 3).map((risk, i) => (
-                      <span
-                        key={i}
-                        className="inline-flex items-center gap-1.5 rounded-full bg-white border border-rose-200 px-3 py-1.5 text-xs font-medium text-rose-700"
-                      >
-                        <AlertTriangle
-                          className={`h-3 w-3 ${risk.level === "high"
-                            ? "text-rose-600"
-                            : "text-amber-600"
-                            }`}
-                        />
-                        {risk.title}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-      )}
 
       {isLoading && (
-        <Card className="border-0 shadow-lg bg-gradient-to-r from-slate-50 to-blue-50">
-          <CardContent className="p-8 flex items-center gap-4 justify-center">
-            <Brain className="h-6 w-6 animate-pulse text-primary" />
-            <span className="text-lg font-semibold text-foreground">Our AI co-pilot is preparing your full analysis...</span>
+        <Card className="border-0   ">
+          <CardContent className="p-8 ">
+          <section className="flex items-center gap-4 justify-center">
+              <Brain className="h-6 w-6 animate-pulse text-primary" />
+              <span className="text-lg font-semibold text-foreground">Our AI co-pilot is preparing your full analysis...</span>
+             
+          </section>
+          <div className=" w-fit mx-auto">
+             <LoadingIcon/>
+          </div>
           </CardContent>
         </Card>
       )}
@@ -647,7 +505,7 @@ export function FullAnalysisPage({
           </div>
 
           {/* Third row: Funding, AI insights, case studies */}
-          <div className="grid lg:grid-cols-3 gap-6">
+          <div className="grid lg:grid-cols-2 gap-6">
             {/* Funding */}
             <Card className="border-0 shadow-lg">
               <CardHeader className="pb-6 border-b border-slate-200/50">
@@ -690,7 +548,7 @@ export function FullAnalysisPage({
             </Card>
 
             {/* AI insights */}
-            <Card className="border-0 shadow-lg lg:col-span-2">
+            <Card className="border-0 shadow-lg lg:col-span-1">
               <CardHeader className="pb-6 border-b border-slate-200/50">
                 <CardTitle className="text-xl font-bold flex items-center gap-2.5">
                   <div className="p-2 bg-primary/10 rounded-lg">
@@ -699,9 +557,9 @@ export function FullAnalysisPage({
                   AI insights & recommendations
                 </CardTitle>
               </CardHeader>
-              <CardContent className="grid md:grid-cols-2 gap-6 text-sm pt-6">
+              <CardContent className=" gap-6 text-sm pt-6">
                 <div className="space-y-3">
-                  <p className="font-bold text-sm flex items-center gap-2.5 text-foreground">
+                  {/* <p className="font-bold text-sm flex items-center gap-2.5 text-foreground">
                     <div className="p-2 bg-primary/10 rounded-lg">
                       <Brain className="h-4 w-4 text-primary" />
                     </div>
@@ -711,7 +569,7 @@ export function FullAnalysisPage({
                     <p className="text-muted-foreground text-sm italic p-4 bg-slate-50 rounded-lg">
                       No explicit AI insights yet. These will appear as the engine is enriched.
                     </p>
-                  )}
+                  )} */}
                   {/* {analysis.aiInsights.map((insight: any, i: number) => (
                     <div key={i} className="p-3 rounded-lg bg-muted/60">
                       <p className="font-medium mb-1">{insight.insight_content}</p>
@@ -919,7 +777,7 @@ export function FullAnalysisPage({
           {/* High level report card */}
           {analysis.detailedReports && analysis.detailedReports.length > 0 && (
             <Card className="border-0 shadow-lg bg-gradient-to-br from-slate-50 to-slate-100">
-              <CardHeader className="pb-6 border-b border-slate-200/50">
+              <CardHeader className="pb-0 border-b border-slate-200/50">
                 <CardTitle className="text-xl font-bold flex items-center gap-2.5">
                   <div className="p-2 bg-primary/10 rounded-lg">
                     <BarChart3 className="h-5 w-5 text-primary" />
@@ -927,7 +785,7 @@ export function FullAnalysisPage({
                   Executive summary
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4 text-sm pt-6">
+              <CardContent className="space-y-4 text-sm ">
                 {analysis.detailedReports[0]?.executive_summary && (
                   <p className="text-muted-foreground leading-relaxed">
                     {analysis.detailedReports[0].executive_summary}
@@ -944,16 +802,175 @@ export function FullAnalysisPage({
                       ))}
                     </ul>
                   )}
-                <div className="pt-4 border-t border-slate-200/50">
-                  <Button asChild variant="outline" size="sm" className="font-bold bg-transparent">
-                    <a href="#top">↑ Back to top</a>
-                  </Button>
-                </div>
+
               </CardContent>
             </Card>
           )}
         </>
       )}
+
+
+
+
+
+      {summaryResult && (
+        <Card className="border-0 shadow-lg overflow-hidden bg-gradient-to-br from-slate-50 via-white to-slate-50">
+          <CardHeader className="pb-6 border-b border-slate-200/50">
+            <CardTitle className="text-xl flex items-center gap-2.5 font-bold">
+              <div className="p-2 bg-primary/10 rounded-lg">
+                <BarChart3 className="h-5 w-5 text-primary" />
+              </div>
+              High-level validation snapshot
+            </CardTitle>
+            <CardDescription className="mt-1 text-sm">
+              A quick summary of the scores, market view and risks generated for this idea.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6 pt-6">
+            <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
+              <div className="space-y-2 flex-1">
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Idea</p>
+                <p className="text-lg font-bold text-foreground">{summaryResult.title}</p>
+                <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground mt-2">
+                  <span className="font-medium">{summaryResult.category}</span>
+                  <div className="h-1 w-1 rounded-full bg-muted-foreground/30" />
+                  <Badge variant="secondary" className="bg-slate-200/50 text-slate-700 border-0 text-xs font-medium">
+                    {(summaryResult.status === "processed" || summaryResult.status === "completed") ? "✓ Completed analysis" : "Analyzing"}
+                  </Badge>
+                </div>
+                <p className="text-xs text-muted-foreground mt-3 font-medium">
+                  Submitted: <span className="text-slate-600">{summaryResult.submittedAt}</span>
+                  {summaryResult.completedAt && (
+                    <>
+                      <span className="mx-2">•</span>
+                      Completed: <span className="text-slate-600">{summaryResult.completedAt}</span>
+                    </>
+                  )}
+                </p>
+              </div>
+
+              {summaryResult.overallScore != null && (
+                <div className="flex items-center gap-4 md:flex-col md:items-end md:justify-start">
+                  <div
+                    className={`flex h-20 w-20 items-center justify-center rounded-2xl font-bold text-center shadow-md transition-transform hover:scale-105 ${getScoreBg(
+                      summaryResult.overallScore,
+                    )}`}
+                  >
+                    <span
+                      className={`text-4xl font-black ${getScoreColor(
+                        summaryResult.overallScore,
+                      )}`}
+                    >
+                      {summaryResult.overallScore}
+                    </span>
+                  </div>
+                  <div className="text-xs text-muted-foreground max-w-[180px]">
+                    <p className="font-semibold text-foreground text-sm">Overall validation score</p>
+                    <p className="mt-1 leading-relaxed">
+                      Higher scores indicate stronger fit on market, feasibility and innovation.
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {summaryResult.scores && (
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {[
+                  { label: "Market", value: summaryResult.scores.market, icon: TrendingUp },
+                  { label: "Competition", value: summaryResult.scores.competition, icon: Users },
+                  { label: "Feasibility", value: summaryResult.scores.feasibility, icon: Target },
+                  { label: "Innovation", value: summaryResult.scores.innovation, icon: Star },
+                ].map((score, i) => (
+                  <div key={i} className="p-4 rounded-2xl bg-white border border-slate-200 flex flex-col items-center gap-2.5 hover:shadow-md transition-shadow">
+                    <div className={`flex h-10 w-10 items-center justify-center rounded-xl font-bold transition-transform hover:scale-110 ${getScoreBg(score.value)}`}>
+                      <score.icon className={`h-5 w-5 ${getScoreColor(score.value)}`} />
+                    </div>
+                    <p
+                      className={`text-2xl font-bold ${getScoreColor(
+                        score.value,
+                      )}`}
+                    >
+                      {score.value}
+                    </p>
+                    <p className="text-xs font-medium text-muted-foreground">{score.label}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {summaryResult.marketAnalysis && (
+              <div className="grid md:grid-cols-3 gap-4">
+                <div className="p-4 rounded-2xl bg-white border border-slate-200 text-center hover:shadow-md transition-shadow">
+                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Market size</p>
+                  <p className="font-bold text-lg mt-2 text-foreground">{summaryResult.marketAnalysis.marketSize}</p>
+                </div>
+                <div className="p-4 rounded-2xl bg-white border border-slate-200 text-center hover:shadow-md transition-shadow">
+                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Growth rate</p>
+                  <p className="font-bold text-lg mt-2 text-emerald-600">{summaryResult.marketAnalysis.growthRate}</p>
+                </div>
+                <div className="p-4 rounded-2xl bg-white border border-slate-200 text-center hover:shadow-md transition-shadow">
+                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Target potential</p>
+                  <p className="font-bold text-lg mt-2 text-foreground">{summaryResult.marketAnalysis.targetPotential}</p>
+                </div>
+              </div>
+            )}
+
+            <div className="grid md:grid-cols-2 gap-6">
+              {summaryResult.recommendations && summaryResult.recommendations.length > 0 && (
+                <div className="p-4 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200/50">
+                  <p className="font-bold text-sm mb-3 text-foreground flex items-center gap-2">
+                    <Star className="h-4 w-4 text-blue-600" />
+                    Top AI recommendations
+                  </p>
+                  <ul className="space-y-2">
+                    {summaryResult.recommendations.slice(0, 3).map((rec, i) => (
+                      <li key={i} className="text-sm text-muted-foreground flex gap-2">
+                        <span className="text-blue-600 font-bold flex-shrink-0">•</span>
+                        <span>{rec}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {summaryResult.risks && summaryResult.risks.length > 0 && (
+                <div className="p-4 rounded-2xl bg-gradient-to-br from-rose-50 to-red-50 border border-rose-200/50">
+                  <p className="font-bold text-sm mb-3 text-foreground flex items-center gap-2">
+                    <AlertTriangle className="h-4 w-4 text-rose-600" />
+                    Highlighted risks
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {summaryResult.risks.slice(0, 3).map((risk, i) => (
+                      <span
+                        key={i}
+                        className="inline-flex items-center gap-1.5 rounded-full bg-white border border-rose-200 px-3 py-1.5 text-xs font-medium text-rose-700"
+                      >
+                        <AlertTriangle
+                          className={`h-3 w-3 ${risk.level === "high"
+                            ? "text-rose-600"
+                            : "text-amber-600"
+                            }`}
+                        />
+                        {risk.title}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+      {
+        analysis && summaryResult && (
+          <div className="pt-4 border-t w-fit mx-auto border-slate-200/50">
+            <Button asChild variant="outline" size="sm" className="font-bold bg-transparent">
+              <a href="#top">↑ Back to top</a>
+            </Button>
+          </div>
+        )
+      }
     </div>
   );
 }

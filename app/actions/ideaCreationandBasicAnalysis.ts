@@ -1,14 +1,62 @@
-'use server'
+"use server"
 
-import { supabaseServer } from '@/lib/supabase/server'
-import { StartupIdeaBase, StartupIdea } from './fullIdeaAnalysis'
-import { generateIdeaAnalysis } from './ai-actions/generateIdeaAnalysisAI'
+import { supabaseServer } from "@/lib/supabase/server"
+import { StartupIdeaBase, StartupIdea } from "./fullIdeaAnalysis"
+import { generateIdeaAnalysis } from "./ai-actions/generateIdeaAnalysisAI"
+import { createClient } from "@supabase/supabase-js"
 
 // Create Idea
 export async function createIdea(idea: StartupIdeaBase): Promise<StartupIdea> {
   const supabase = await supabaseServer()
+
+  // Ensure the authenticated user has a row in the users table
+  // (important for Google OAuth flows where callback provisioning may have failed).
+  try {
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser()
+
+    if (!userError && user) {
+      const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+      const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+
+      if (url && serviceKey) {
+        const adminClient = createClient(url, serviceKey)
+
+        const fullName =
+          typeof user.user_metadata?.full_name === "string"
+            ? user.user_metadata.full_name
+            : typeof user.user_metadata?.fullName === "string"
+            ? user.user_metadata.fullName
+            : undefined
+
+        const { error: upsertError } = await adminClient.from("users").upsert(
+          {
+            id: user.id,
+            email: user.email,
+            full_name: fullName ?? user.email ?? "Unknown",
+          },
+          { onConflict: "id" }
+        )
+
+        if (upsertError) {
+          console.error(
+            "Error upserting user into users table before idea creation:",
+            upsertError,
+          )
+        }
+      }
+    }
+  } catch (e) {
+    console.error(
+      "Unexpected error ensuring user exists in users table before idea creation:",
+      e,
+    )
+  }
+
   const { data: newIdea, error } = await supabase
-    .from('startup_ideas')
+    .from("startup_ideas")
     .insert([{ ...idea, submitted_at: new Date().toISOString() }])
     .select()
     .single()

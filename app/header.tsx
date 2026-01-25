@@ -66,7 +66,7 @@ function Header({ }: Props) {
                     <div className="flex h-10 w-10 items-center justify-center rounded-lg gradient-primary shadow-md">
                         <Sparkles className="h-5 w-5 text-white" />
                     </div>
-                    <span className="text-gradient hidden sm:inline">MedValidateAI</span>
+                    <span className="text-gradient inline">MedValidateAI</span>
                 </Link>
 
                 {/* Desktop Navigation */}
@@ -97,7 +97,7 @@ function Header({ }: Props) {
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
                                     <Button variant="ghost" className="relative h-10 w-10 rounded-full hover:bg-accent">
-                                        <Avatar className="h-10 w-10 border-2 border-primary/20 shadow-sm">
+                                        <Avatar className="h-10 w-10 border-2 border-black/30 shadow-sm">
                                             <AvatarImage src={user.avatarUrl} />
                                             <AvatarFallback className="bg-primary/10 text-primary font-semibold text-sm">
                                                 {user.fullName?.charAt(0) || user.email.charAt(0).toUpperCase()}
@@ -110,6 +110,11 @@ function Header({ }: Props) {
                                         <div className="flex flex-col space-y-1">
                                             <p className="text-sm font-medium">{user.fullName || 'User'}</p>
                                             <p className="text-xs text-muted-foreground">{user.email}</p>
+                                            {user.provider && (
+                                                <p className="text-[10px] font-medium text-muted-foreground/80">
+                                                    Signed in with {user.provider === 'google' ? 'Google' : 'Email & Password'}
+                                                </p>
+                                            )}
                                         </div>
                                     </DropdownMenuLabel>
                                     <DropdownMenuSeparator />
@@ -158,7 +163,7 @@ function Header({ }: Props) {
                         <Button 
                             variant="ghost" 
                             size="icon"
-                            className="h-10 w-10 hover:bg-gray-100 dark:hover:bg-gray-800"
+                            className="h-9 w-9 hover:bg-gray-100 bg-gray-800 rounded-b-4xl rounded-tl-4xl dark:hover:bg-gray-800"
                         >
                             <Menu className="h-6 w-6 text-gray-900 dark:text-gray-100" />
                             <span className="sr-only">Toggle menu</span>

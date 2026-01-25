@@ -51,6 +51,7 @@ export default function DashboardLayout({
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   const pathname = usePathname();
+  const isFullAnalysisPage = pathname?.includes('/dashboard/results/full-analysis/');
   const router = useRouter();
   const { user, logout } = useAuth();
 
@@ -67,7 +68,7 @@ export default function DashboardLayout({
       {/* Navigation */}
       <nav className="flex-1 px-3 sm:px-4 py-4 space-y-2 overflow-y-auto">
         {sidebarLinks.map((link) => {
-          const isActive = pathname === link.href;
+          const isActive = (isFullAnalysisPage && link.href === '/dashboard/results') || pathname === link.href;
           const Icon = link.icon;
 
           const linkNode = (
@@ -128,11 +129,11 @@ export default function DashboardLayout({
   );
 
   return (
-    <div className="min-h-screen flex w-full bg-gray-50">
+    <div className="min-h-screen w-full bg-gray-50 lg:flex">
       {/* Desktop Sidebar */}
       <aside
         className={cn(
-          'hidden lg:flex flex-col bg-white border-r border-gray-200 transition-all duration-300 overflow-hidden shadow-sm',
+          'hidden lg:flex lg:sticky  lg:top-16 lg:h-screen z-30 flex-col bg-white border-r border-gray-200 transition-all duration-300 overflow-hidden shadow-sm',
           isCollapsed ? 'w-20' : 'w-64'
         )}
       >
@@ -150,7 +151,7 @@ export default function DashboardLayout({
       </Sheet>
 
       {/* Main Area */}
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className="flex-1 flex min-h-screen flex-col min-w-0">
         {/* Mobile Menu Button */}
         <div className="lg:hidden flex items-center gap-4 px-4 sm:px-6 py-4 bg-white border-b border-gray-200">
           <button

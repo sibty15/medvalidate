@@ -40,6 +40,7 @@ import {
   CheckCircle2,
   Zap,
 } from "lucide-react";
+import BoltIcon from "@/components/icons/bolt";
 
 const ideaSchema = z.object({
   title: z.string().min(5, "Title must be at least 5 characters").max(100),
@@ -208,8 +209,10 @@ export default function IdeaSubmissionPage() {
 
   const formValues = form.watch();
 
-  const fillTestData = () => {
-    const testData = {
+	const [currentTestIndex, setCurrentTestIndex] = useState(0);
+
+  const testDataVariations = [
+    {
       title: "AI-Powered Telemedicine Platform for Rural Pakistan",
       description: "A mobile-first telemedicine platform designed to connect rural and underserved populations with licensed doctors through low-bandwidth video consultations, AI-assisted symptom triage, and digital prescriptions. The platform supports Urdu and regional languages and enables family members to join consultations, improving trust and accessibility.",
       problemStatement: "Rural and semi-urban populations in Pakistan face limited access to qualified doctors, long travel times to hospitals, high out-of-pocket healthcare costs, and delayed diagnoses due to a shortage of medical professionals and healthcare infrastructure.",
@@ -220,15 +223,58 @@ export default function IdeaSubmissionPage() {
       teamSize: "2-5",
       fundingNeeded: "5m-20m",
       domain: "Healthcare",
-    };
+    },
+    {
+      title: "Mental Wellness AI - Mental Health Support Platform",
+      description: "An AI-powered mental health platform offering 24/7 symptom tracking, cognitive behavioral therapy exercises, meditation guides, and real-time crisis intervention. Features peer support communities, anonymous forums, and seamless integration with licensed therapists for those seeking professional help.",
+      problemStatement: "Pakistan's mental health crisis is largely unaddressed with a severe shortage of mental health professionals, cultural stigma preventing people from seeking help, and limited access to affordable mental health resources in both urban and rural areas.",
+      targetAudience: "Young adults aged 18-35, students, working professionals, individuals experiencing depression and anxiety, families seeking mental wellness tools",
+      uniqueValueProposition: "Culturally sensitive, AI-driven mental health companion with stigma-free interface, local language support, and bridges gap between self-care and professional mental healthcare.",
+      category: "mental-health",
+      stage: "prototype",
+      teamSize: "6-10",
+      fundingNeeded: "1m-5m",
+      domain: "Healthcare",
+    },
+    {
+      title: "Smart Health Wearable Analytics Platform",
+      description: "An integrated wearable device ecosystem with cloud analytics that monitors vital signs, sleep patterns, physical activity, and nutrition. Provides personalized health insights, early disease risk detection using machine learning, and seamless doctor integration for preventive healthcare in Pakistan.",
+      problemStatement: "Pakistanis lack affordable, accessible preventive healthcare solutions. Most wearables lack localized health insights, and there's no unified platform connecting wearable data with healthcare providers for early intervention and disease prevention.",
+      targetAudience: "Health-conscious individuals, people with chronic conditions, fitness enthusiasts, corporate wellness programs, middle to upper-income families in urban Pakistan",
+      uniqueValueProposition: "Affordable wearable solution with AI-driven predictive health insights, local doctor integration, Urdu language support, and enterprise wellness program capabilities.",
+      category: "health-monitoring",
+      stage: "mvp",
+      teamSize: "6-10",
+      fundingNeeded: "5m-20m",
+      domain: "Medical Devices",
+    },
+    {
+      title: "HealthTech Analytics for Hospital Management",
+      description: "A comprehensive hospital management and data analytics platform that optimizes patient flow, reduces wait times, enables predictive patient admission planning, and provides real-time performance dashboards. Includes inventory management, staff scheduling, and patient outcome tracking.",
+      problemStatement: "Pakistani hospitals struggle with inefficient patient management systems, long wait times, poor data-driven decision making, inventory mismanagement, and lack of real-time performance metrics affecting patient care quality.",
+      targetAudience: "Private and public hospitals, healthcare chains, clinic administrators, hospital management professionals, healthcare decision makers",
+      uniqueValueProposition: "End-to-end hospital management solution tailored for Pakistani healthcare infrastructure with offline-first capabilities, affordable pricing, and proven ROI through operational efficiency.",
+      category: "healthcare-ai",
+      stage: "early-traction",
+      teamSize: "11+",
+      fundingNeeded: "20m+",
+      domain: "Healthcare",
+    },
+  ];
 
-    // Fill all form fields
-    Object.entries(testData).forEach(([key, value]) => {
-      form.setValue(key as keyof IdeaFormData, value);
-    });
+  const fillTestData = () => {
+		const testData = testDataVariations[currentTestIndex] || testDataVariations[0];
 
-    toast.success("Test data filled! Review and submit when ready.");
-    setCurrentStep(1); // Go back to first step to see all data
+		// Fill all form fields
+		Object.entries(testData).forEach(([key, value]) => {
+			form.setValue(key as keyof IdeaFormData, value);
+		});
+
+		toast.success(
+			`Test data  ${currentTestIndex + 1} filled!`,
+		);
+		setCurrentStep(1); // Go back to first step to see all data
+		setCurrentTestIndex((prev) => (prev + 1) % testDataVariations.length);
   };
 
   return (
@@ -626,7 +672,7 @@ export default function IdeaSubmissionPage() {
                 </Button>
 
                 {currentStep < 4 ? (
-                  <Button type="button" onClick={nextStep} className="gradient-primary">
+                  <Button type="button" onClick={nextStep} className="gradient-primary cursor-pointer hover:scale-[1.02] transition-transform">
                     Next Step
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
@@ -634,7 +680,7 @@ export default function IdeaSubmissionPage() {
                   <Button
                     type="button"
                     onClick={form.handleSubmit(onSubmit)}
-                    className="gradient-secondary"
+                    className="gradient-secondary cursor-pointer hover:scale-[1.02] transition-transform"
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? (
@@ -656,15 +702,15 @@ export default function IdeaSubmissionPage() {
         </CardContent>
       </Card>
 
-      {/* Floating Test Fill Button */}
-      <Button
-        type="button"
-        onClick={fillTestData}
-        className="fixed bottom-8 right-8 h-14 w-14 rounded-full shadow-2xl gradient-secondary hover:scale-110 transition-transform z-50"
-        title="Fill form with test data"
-      >
-        <Zap className="h-6 w-6" />
-      </Button>
+      {/* Floating Test Fill Button (cycles through ideas) */}
+		<Button
+			type="button"
+			onClick={fillTestData}
+			className="fixed bottom-8 lg:bottom-20 right-8  h-10 w-10 sm:h-14 sm:w-14 cursor-pointer rounded-full p-0 shadow-2xl gradient-secondary hover:scale-110 transition-transform z-50 flex items-center justify-center"
+			title="Fill form with sample test idea"
+		>
+			<BoltIcon className=" h-8 w-8 sm:h-12 sm:w-12" />
+		</Button>
     </div>
   );
 }

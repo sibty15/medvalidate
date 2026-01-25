@@ -8,6 +8,7 @@ export interface User {
 	fullName?: string;
 	avatarUrl?: string;
 	createdAt: string;
+	provider?: string;
 }
 
 // Auth types

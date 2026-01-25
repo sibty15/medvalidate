@@ -27,17 +27,17 @@ function Footer({ }: Props) {
                         <h4 className="font-display font-semibold text-gray-900 dark:text-gray-100 text-base">Quick Links</h4>
                         <ul className="space-y-3 text-sm">
                             <li>
-                                <Link href="/about" className="text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors inline-flex items-center gap-1 group">
+                                <Link href="/about" className="text-gray-600 dark:text-gray-400 hover:text-white/80 dark:hover:text-white/80 transition-colors inline-flex items-center gap-1 group">
                                     <span className="group-hover:translate-x-0.5 transition-transform">About Us</span>
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/contact" className="text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors inline-flex items-center gap-1 group">
+                                <Link href="/contact" className="text-gray-600 dark:text-gray-400 hover:text-white/80 dark:hover:text-white/80 transition-colors inline-flex items-center gap-1 group">
                                     <span className="group-hover:translate-x-0.5 transition-transform">Contact</span>
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/login" className="text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors inline-flex items-center gap-1 group">
+                                <Link href="/login" className="text-gray-600 dark:text-gray-400 hover:text-white/80 dark:hover:text-white/80 transition-colors inline-flex items-center gap-1 group">
                                     <span className="group-hover:translate-x-0.5 transition-transform">Login</span>
                                 </Link>
                             </li>
@@ -73,13 +73,13 @@ function Footer({ }: Props) {
                         <ul className="space-y-3 text-sm text-gray-600 dark:text-gray-400">
                             <li className="flex items-start gap-2">
                                 <span className="text-primary mt-0.5">📧</span>
-                                <a href="mailto:support@MedValidateAI.pk" className="hover:text-primary transition-colors">
-                                    support@MedValidateAI.pk
+                                <a href="mailto:support@MedValidateAI.pk" className="hover:text-white/80 transition-colors">
+                                    ayanhaidershah0@gmail.com
                                 </a>
                             </li>
                             <li className="flex items-start gap-2">
                                 <span className="text-primary mt-0.5">📍</span>
-                                <span>Karachi, Pakistan</span>
+                                <span>Haripur, Pakistan</span>
                             </li>
                         </ul>
                     </div>

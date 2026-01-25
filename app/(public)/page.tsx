@@ -61,9 +61,9 @@ const stats = [
 
 export default function Home() {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col  items-center w-full">
       {/* Hero Section */}
-      <section className="relative min-h-[90vh] flex items-center overflow-hidden">
+      <section className="relative min-h-[90vh] flex w-full items-center overflow-hidden">
         {/* Background */}
         <div className="absolute inset-0 gradient-hero" />
         <div
@@ -74,7 +74,7 @@ export default function Home() {
         <div className="absolute top-20 left-[10%] w-72 h-72 bg-primary/20 rounded-full blur-3xl animate-pulse-slow" />
         <div className="absolute bottom-20 right-[10%] w-96 h-96 bg-secondary/20 rounded-full blur-3xl animate-pulse-slow" />
 
-        <div className="container relative z-10 py-20">
+        <div className="container relative mx-auto z-10 py-20">
           <div className="max-w-4xl mx-auto text-center space-y-8">
             {/* Badge */}
             <span className="inline-flex items-center justify-center rounded-full px-4 py-2 text-sm font-medium bg-white/10 text-white border border-white/20 backdrop-blur-sm">
@@ -323,12 +323,12 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 lg:py-32 relative overflow-hidden">
+      <section className="py-20 lg:py-32 relative overflow-hidden w-full">
         <div className="absolute inset-0 gradient-hero" />
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/30 rounded-full blur-3xl" />
         <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-secondary/30 rounded-full blur-3xl" />
 
-        <div className="container relative z-10">
+        <div className="container mx-auto relative z-10">
           <div className="max-w-3xl mx-auto text-center space-y-8">
             <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-white">
               Ready to Validate Your

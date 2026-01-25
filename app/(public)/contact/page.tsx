@@ -19,20 +19,20 @@ const contactInfo = [
   {
     icon: Mail,
     title: "Email Us",
-    details: "support@MedValidateAI.pk",
+    details: "ayanhaidershah0@gmail.com",
     subtitle: "We respond within 24 hours",
   },
   {
     icon: Phone,
     title: "Call Us",
-    details: "+92 21 1234 5678",
+    details: "+92 331 225678",
     subtitle: "Mon-Fri, 9am-6pm PKT",
   },
   {
     icon: MapPin,
     title: "Visit Us",
-    details: "Karachi, Pakistan",
-    subtitle: "Clifton Business District",
+    details: "Haripur, Pakistan",
+    subtitle: "Haripur District",
   },
 ];
 
@@ -208,7 +208,7 @@ export default function ContactPage() {
 
                     <button
                       type="submit"
-                      className="inline-flex w-full items-center justify-center rounded-full gradient-primary text-white px-6 py-3 text-base font-semibold disabled:opacity-70"
+                      className="inline-flex w-full cursor-pointer hover:opacity-90 items-center justify-center rounded-full gradient-primary text-white px-6 py-3 text-base font-semibold disabled:opacity-70"
                       disabled={isSubmitting}
                     >
                       {isSubmitting ? (

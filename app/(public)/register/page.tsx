@@ -61,7 +61,7 @@ export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const router = useRouter();
-  const { register } = useAuth();
+  const { register, loginWithGoogle } = useAuth();
 
 
   const form = useForm<RegisterFormData>({
@@ -87,7 +87,15 @@ export default function RegisterPage() {
       router.push("/dashboard");
     } catch (error) {
       toast.error("Registration Failed. Please try again later.");
-      
+
+    }
+  };
+
+  const handleGoogleRegister = async () => {
+    try {
+      await loginWithGoogle();
+    } catch (error) {
+      toast.error("Google sign-up failed. Please try again.");
     }
   };
 
@@ -123,8 +131,8 @@ export default function RegisterPage() {
       </div>
 
       {/* Right Panel - Form */}
-      <div className="flex-1 flex items-center justify-center p-8">
-        <div className="w-full max-w-md space-y-8">
+      <div className="flex-1 flex items-center justify-center px-8 py-6">
+        <div className="w-full max-w-md space-y-6">
           {/* Logo */}
           <Link
             href="/"
@@ -136,17 +144,11 @@ export default function RegisterPage() {
             <span className="text-gradient">MedValidateAI</span>
           </Link>
 
-          {/* Header */}
-          <div className="space-y-2">
-            <h1 className="font-display text-3xl font-bold">Create your account</h1>
-            <p className="text-muted-foreground">
-              Join the healthcare innovation revolution in Pakistan.
-            </p>
-          </div>
+          
 
           {/* Form */}
           <Card className="border-0 shadow-xl">
-            <CardContent className="p-6">
+            <CardContent className="px-6">
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
                   <FormField
@@ -303,6 +305,30 @@ export default function RegisterPage() {
                   </Button>
                 </form>
               </Form>
+
+              {/* OAuth Register */}
+              <div className="mt-4 flex flex-col gap-3">
+                <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <span className="h-px flex-1 bg-border" />
+                  <span>Or sign up with</span>
+                  <span className="h-px flex-1 bg-border" />
+                </div>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-full"
+                  onClick={handleGoogleRegister}
+                >
+                  <svg xmlns="http://www.w3.org" viewBox="0 0 48 48" width="48px" height="48px">
+                    <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" />
+                    <path fill="#4285F4" d="M46.91 24.5c0-1.61-.15-3.16-.41-4.65H24v9.09h12.87c-.55 2.96-2.22 5.48-4.73 7.16v5.95h7.66c4.48-4.13 7.07-10.21 7.07-17.55z" />
+                    <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24s.92 7.54 2.56 10.78l7.97-6.19z" />
+                    <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.66-5.95c-2.12 1.43-4.84 2.26-8.23 2.26-6.26 0-11.57-4.22-13.47-9.91l-7.97 6.19C6.51 42.62 14.62 48 24 48z" />
+                    <path fill="none" d="M0 0h48v48H0z" />
+                  </svg>
+                  Continue with Google
+                </Button>
+              </div>
             </CardContent>
           </Card>
 

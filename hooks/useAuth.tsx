@@ -8,6 +8,7 @@ interface AuthContextType extends AuthState {
 	login: (credentials: LoginCredentials) => Promise<void>;
 	register: (credentials: RegisterCredentials) => Promise<void>;
 	logout: () => Promise<void>;
+	loginWithGoogle: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -43,8 +44,40 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 							: typeof supabaseUser.user_metadata?.fullName === "string"
 							? supabaseUser.user_metadata.fullName
 							: undefined),
+					avatarUrl:
+						typeof supabaseUser.user_metadata?.avatar_url === "string"
+							? supabaseUser.user_metadata.avatar_url
+							: undefined,
+					provider:
+						typeof supabaseUser.app_metadata?.provider === "string"
+							? supabaseUser.app_metadata.provider
+							: undefined,
 					createdAt: supabaseUser.created_at,
 				};
+
+				// Ensure user exists in public users table for any auth method (email/password or OAuth)
+				try {
+					const { data: existingUser, error: fetchError } = await supabase
+						.from("users")
+						.select("id")
+						.eq("id", mappedUser.id)
+						.single();
+
+					if (!existingUser && !fetchError) {
+						const { error: insertError } = await supabase.from("users").insert({
+							id: mappedUser.id,
+							email: mappedUser.email,
+							full_name: mappedUser.fullName,
+							created_at: mappedUser.createdAt,
+						});
+
+						if (insertError) {
+							console.error("Error inserting user into users table (checkAuth):", insertError);
+						}
+					}
+				} catch (tableError) {
+					console.error("Error ensuring user exists in users table (checkAuth):", tableError);
+				}
 
 				if (typeof window !== "undefined") {
 					localStorage.setItem("launchly_user", JSON.stringify(mappedUser));
@@ -98,6 +131,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 						: typeof supabaseUser.user_metadata?.fullName === "string"
 						? supabaseUser.user_metadata.fullName
 						: undefined),
+				avatarUrl:
+					typeof supabaseUser.user_metadata?.avatar_url === "string"
+						? supabaseUser.user_metadata.avatar_url
+						: undefined,
+				provider:
+					typeof supabaseUser.app_metadata?.provider === "string"
+						? supabaseUser.app_metadata.provider
+						: undefined,
 				createdAt: supabaseUser.created_at,
 			};
 
@@ -175,6 +216,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 						: typeof supabaseUser.user_metadata?.fullName === "string"
 						? supabaseUser.user_metadata.fullName
 						: credentials.fullName),
+				avatarUrl:
+					typeof supabaseUser.user_metadata?.avatar_url === "string"
+						? supabaseUser.user_metadata.avatar_url
+						: undefined,
+				provider:
+					typeof supabaseUser.app_metadata?.provider === "string"
+						? supabaseUser.app_metadata.provider
+						: undefined,
 				createdAt: supabaseUser.created_at,
 			};
 
@@ -221,10 +270,44 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 			isLoading: false,
 			isAuthenticated: false,
 		});
+		window.location.href = "/login";
+	}, []);
+
+	const loginWithGoogle = useCallback(async () => {
+		setAuthState((prev) => ({ ...prev, isLoading: true }));
+		try {
+			const supabase = supabaseBrowser();
+			const redirectTo =
+				typeof window !== "undefined"
+					? `${window.location.origin}/auth/callback`
+					: undefined;
+
+			// Mark Google verification flag as false at the moment of login.
+			// GoogleUserStorer will flip it to true once the user is confirmed
+			// in the `users` table, and subsequent page loads will skip checks.
+			if (typeof window !== "undefined") {
+				localStorage.setItem("loggedInGoogleAndUserVerified", "false");
+			}
+
+			const { error } = await supabase.auth.signInWithOAuth({
+				provider: "google",
+				options: {
+					redirectTo,
+				},
+			});
+			console.log({error})
+			if (error) {
+				throw error;
+			}
+		} catch (error) {
+			setAuthState((prev) => ({ ...prev, isLoading: false }));
+			console.log(error)
+			throw error;
+		}
 	}, []);
 
 	return (
-		<AuthContext.Provider value={{ ...authState, login, register, logout }}>
+		<AuthContext.Provider value={{ ...authState, login, register, logout, loginWithGoogle }}>
 			{children}
 		</AuthContext.Provider>
 	);

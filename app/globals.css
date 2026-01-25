@@ -1,10 +1,12 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-/* Dark mode variant (shadcn v2) */
-/* @custom-variant dark (&:is(.dark *)); */
+/* MEDICAL THEME SYSTEM 
+  Primary: Clinical Teal (Representing health and hygiene)
+  Secondary: Professional Navy (Representing authority and trust)
+  Accent: Soft Cyan (Representing modern technology)
+*/
 
-/* shadcn theme tokens */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -28,6 +30,7 @@
   --color-accent-foreground: var(--accent-foreground);
 
   --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
 
   --color-border: var(--border);
   --color-input: var(--input);
@@ -51,194 +54,128 @@
   --radius-2xl: calc(var(--radius) + 8px);
 }
 
-/* ================= BASE ================= */
+/* ================= BASE (MEDICAL PALETTE) ================= */
+
 @layer base {
   :root {
-    /* Core */
-    --background: 210 20% 98%;
-    --foreground: 210 40% 11%;
-
+    /* Sterile White Background with a hint of blue to prevent eye strain */
+    --background: 210 40% 98%;
+    --foreground: 222 47% 11%;
+    
     --card: 0 0% 100%;
-    --card-foreground: 210 40% 11%;
-
+    --card-foreground: 222 47% 11%;
+    
     --popover: 0 0% 100%;
-    --popover-foreground: 210 40% 11%;
-
-    /* Brand */
-    --primary: 168 76% 36%;
+    --popover-foreground: 222 47% 11%;
+    
+    /* Clinical Teal */
+    --primary: 174 100% 29%;
     --primary-foreground: 0 0% 100%;
+    
+    /* Professional Navy */
+    --secondary: 215 25% 27%;
+    --secondary-foreground: 210 40% 98%;
+    
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    
+    --accent: 180 30% 96%;
+    --accent-foreground: 174 100% 29%;
+    
+    /* Emergency Red */
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 174 100% 29%;
+    
+    --radius: 0.5rem;
 
-    --secondary: 24 95% 53%;
-    --secondary-foreground: 0 0% 100%;
+    /* Medical Data Charts */
+    --chart-1: 174 100% 29%; /* Teal */
+    --chart-2: 215 25% 27%;  /* Navy */
+    --chart-3: 199 89% 48%;  /* Blue */
+    --chart-4: 162 59% 45%;  /* Sage Green */
+    --chart-5: 190 90% 40%;  /* Cyan */
 
-    --muted: 210 20% 96%;
-    --muted-foreground: 215 16% 47%;
-
-    --accent: 199 89% 48%;
-    --accent-foreground: 0 0% 100%;
-
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 168 76% 36%;
-
-    --radius: 0.75rem;
-
-    /* Extended Palette */
-    --success: 152 69% 40%;
-    --success-foreground: 0 0% 100%;
-    --warning: 38 92% 50%;
-    --warning-foreground: 0 0% 100%;
-    --info: 199 89% 48%;
-    --info-foreground: 0 0% 100%;
-
-    /* Gradients */
-    --gradient-primary: linear-gradient(
-      135deg,
-      hsl(168 76% 36%) 0%,
-      hsl(186 72% 42%) 100%
-    );
-
-    --gradient-secondary: linear-gradient(
-      135deg,
-      hsl(24 95% 53%) 0%,
-      hsl(38 92% 50%) 100%
-    );
-
-    --gradient-hero: linear-gradient(
-      135deg,
-      hsl(210 40% 11%) 0%,
-      hsl(210 35% 22%) 50%,
-      hsl(168 60% 25%) 100%
-    );
-
-    --gradient-glass: linear-gradient(
-      135deg,
-      rgba(255,255,255,0.1),
-      rgba(255,255,255,0.05)
-    );
-
-    /* Shadows */
-    --shadow-glow: 0 0 40px rgba(20, 184, 166, 0.15);
-    --shadow-card: 0 4px 20px -2px rgba(0,0,0,0.08);
-
-    /* Sidebar */
-    --sidebar-background: 210 40% 11%;
-    --sidebar-foreground: 210 20% 90%;
-    --sidebar-primary: 168 76% 42%;
+    /* Sidebar Variables */
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 222 47% 11%;
+    --sidebar-primary: 174 100% 29%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 210 35% 18%;
-    --sidebar-accent-foreground: 210 20% 90%;
-    --sidebar-border: 210 35% 20%;
-    --sidebar-ring: 168 76% 42%;
+    --sidebar-accent: 180 30% 96%;
+    --sidebar-accent-foreground: 174 100% 29%;
+    --sidebar-border: 214.3 31.8% 91.4%;
+    --sidebar-ring: 174 100% 29%;
   }
 
   .dark {
-    --background: 210 40% 8%;
-    --foreground: 210 20% 98%;
+    --background: 222 47% 4%;
+    --foreground: 210 40% 98%;
+    
+    --card: 222 47% 6%;
+    --card-foreground: 210 40% 98%;
+    
+    --popover: 222 47% 4%;
+    --popover-foreground: 210 40% 98%;
+    
+    --primary: 174 100% 35%;
+    --primary-foreground: 0 0% 100%;
+    
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    
+    --accent: 174 100% 12%;
+    --accent-foreground: 174 100% 45%;
+    
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 174 100% 35%;
 
-    --card: 210 35% 12%;
-    --card-foreground: 210 20% 98%;
-
-    --popover: 210 35% 12%;
-    --popover-foreground: 210 20% 98%;
-
-    --primary: 168 72% 45%;
-    --primary-foreground: 210 40% 8%;
-
-    --secondary: 24 90% 55%;
-    --secondary-foreground: 0 0% 100%;
-
-    --muted: 210 30% 18%;
-    --muted-foreground: 215 20% 65%;
-
-    --accent: 199 85% 52%;
-    --accent-foreground: 0 0% 100%;
-
-    --destructive: 0 72% 51%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 210 30% 20%;
-    --input: 210 30% 20%;
-    --ring: 168 72% 45%;
-
-    --sidebar-background: 210 40% 6%;
-    --sidebar-foreground: 210 20% 90%;
-    --sidebar-primary: 168 72% 45%;
+    --sidebar-background: 222 47% 4%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 174 100% 35%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 210 35% 12%;
-    --sidebar-accent-foreground: 210 20% 90%;
-    --sidebar-border: 210 35% 15%;
-    --sidebar-ring: 168 72% 45%;
-  }
-
-  * {
-    @apply border-border;
-  }
-
-  body {
-    @apply bg-background text-foreground antialiased;
-    font-family: 'Inter', sans-serif;
-  }
-
-  h1, h2, h3, h4, h5, h6 {
-    font-family: 'Poppins', sans-serif;
-    font-weight: 700;
-  }
-
-  h1 {
-    @apply text-4xl md:text-5xl lg:text-6xl;
-  }
-
-  h2 {
-    @apply text-3xl md:text-4xl lg:text-5xl;
-  }
-
-  h3 {
-    @apply text-2xl md:text-3xl lg:text-4xl;
-  }
-
-  h4 {
-    @apply text-xl md:text-2xl;
-  }
-
-  h5 {
-    @apply text-lg md:text-xl;
-  }
-
-  h6 {
-    @apply text-base md:text-lg;
+    --sidebar-accent: 174 100% 12%;
+    --sidebar-accent-foreground: 174 100% 45%;
+    --sidebar-border: 217.2 32.6% 17.5%;
+    --sidebar-ring: 174 100% 35%;
   }
 }
 
-/* ================= GRADIENTS ================= */
+/* ================= GRADIENTS (MEDICAL TECH VIBE) ================= */
 .gradient-primary {
-  background: linear-gradient(135deg, hsl(168 76% 36%) 0%, hsl(186 72% 42%) 100%);
+  background: linear-gradient(135deg, hsl(174 100% 29%) 0%, hsl(190 90% 40%) 100%);
 }
 
 .gradient-secondary {
-  background: linear-gradient(135deg, hsl(24 95% 53%) 0%, hsl(38 92% 50%) 100%);
+  background: linear-gradient(135deg, hsl(215 25% 27%) 0%, hsl(222 47% 15%) 100%);
 }
 
 .gradient-hero {
-  background: linear-gradient(135deg, hsl(210 40% 11%) 0%, hsl(210 35% 22%) 50%, hsl(168 60% 25%) 100%);
+  background: linear-gradient(135deg, hsl(222 47% 11%) 0%, hsl(215 25% 20%) 50%, hsl(174 100% 20%) 100%);
 }
 
 .glass {
-  background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255,255,255,0.1);
+  background: linear-gradient(135deg, rgba(255,255,255,0.7), rgba(255,255,255,0.4));
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.3);
 }
 
 /* ================= SHADOWS ================= */
 .shadow-glow {
-  box-shadow: 0 0 40px rgba(20, 184, 166, 0.15);
+  box-shadow: 0 0 30px rgba(20, 184, 166, 0.2);
 }
 
 .shadow-card {
-  box-shadow: 0 4px 20px -2px rgba(0,0,0,0.08);
+  box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05), 0 8px 10px -6px rgba(0,0,0,0.03);
 }
 
 /* ================= TEXT GRADIENTS ================= */
@@ -246,19 +183,18 @@
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
-  background-image: linear-gradient(135deg, hsl(168 76% 36%) 0%, hsl(186 72% 42%) 100%);
+  background-image: linear-gradient(135deg, hsl(174 100% 29%) 0%, hsl(190 90% 40%) 100%);
 }
 
 .text-gradient-secondary {
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
-  background-image: linear-gradient(135deg, hsl(24 95% 53%) 0%, hsl(38 92% 50%) 100%);
+  background-image: linear-gradient(135deg, hsl(215 25% 27%) 0%, hsl(199 89% 48%) 100%);
 }
 
 /* ================= UTILITIES ================= */
 @layer utilities {
-  /* Spacing utilities */
   .section {
     @apply py-16 md:py-20 lg:py-24;
   }
@@ -271,9 +207,8 @@
     @apply py-20 md:py-28 lg:py-32;
   }
 
-  /* Card styles */
   .card-hover {
-    @apply transition-all duration-300 hover:shadow-xl hover:-translate-y-1;
+    @apply transition-all duration-300 hover:shadow-card hover:-translate-y-1 hover:border-primary/20 border border-transparent;
   }
 }
 
@@ -287,50 +222,56 @@
 }
 
 .animate-slide-up {
-  animation: slideUp 0.6s ease-out;
+  animation: slideUp 0.6s ease-out forwards;
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.5s ease-out;
+  animation: fadeIn 0.5s ease-out forwards;
 }
 
 .animate-scale-in {
-  animation: scaleIn 0.3s ease-out;
+  animation: scaleIn 0.3s ease-out forwards;
 }
 
 /* ================= BUTTON ENHANCEMENTS ================= */
 .btn-gradient-primary {
-  background: linear-gradient(135deg, hsl(168 76% 36%) 0%, hsl(186 72% 42%) 100%);
+  background: linear-gradient(135deg, hsl(174 100% 29%) 0%, hsl(190 90% 40%) 100%);
   color: white;
   font-weight: 600;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  transition: opacity 0.3s;
+  box-shadow: 0 4px 14px 0 rgba(0, 148, 133, 0.3);
+  transition: all 0.3s ease;
+  border-radius: var(--radius);
 }
 
 .btn-gradient-primary:hover {
-  opacity: 0.9;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px 0 rgba(0, 148, 133, 0.4);
+  filter: brightness(1.1);
 }
 
 .btn-gradient-secondary {
-  background: linear-gradient(135deg, hsl(24 95% 53%) 0%, hsl(38 92% 50%) 100%);
+  background: linear-gradient(135deg, hsl(215 25% 27%) 0%, hsl(222 47% 15%) 100%);
   color: white;
   font-weight: 600;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  transition: opacity 0.3s;
+  box-shadow: 0 4px 14px 0 rgba(31, 41, 55, 0.2);
+  transition: all 0.3s ease;
+  border-radius: var(--radius);
 }
 
 .btn-gradient-secondary:hover {
-  opacity: 0.9;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px 0 rgba(31, 41, 55, 0.3);
+  filter: brightness(1.1);
 }
 
 /* ================= KEYFRAMES ================= */
 @keyframes float {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-20px); }
+  50% { transform: translateY(-15px); }
 }
 
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(30px); }
+  from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
@@ -340,112 +281,108 @@
 }
 
 @keyframes scaleIn {
-  from { opacity: 0; transform: scale(0.95); }
+  from { opacity: 0; transform: scale(0.98); }
   to { opacity: 1; transform: scale(1); }
 }
 
 /* ================= SCROLLBAR ================= */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-track {
   background: hsl(var(--muted));
-  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: hsl(var(--muted-foreground) / 0.3);
-  border-radius: 4px;
+  background: hsl(var(--primary) / 0.2);
+  border-radius: 10px;
+  border: 2px solid hsl(var(--muted));
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--muted-foreground) / 0.5);
+  background: hsl(var(--primary) / 0.4);
 }
 
 /* ================= FOCUS ================= */
 *:focus-visible {
-  @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  outline: none;
+  box-shadow: 0 0 0 2px hsl(var(--background)), 0 0 0 4px hsl(var(--ring));
 }
 
 /* ================= ICON COLORS ================= */
-.icon-primary {
-  @apply text-primary;
-}
+.icon-primary { color: hsl(var(--primary)); }
+.icon-secondary { color: hsl(var(--secondary)); }
+.icon-success { color: #059669; }
+.icon-warning { color: #d97706; }
+.icon-info { color: #2563eb; }
+.icon-muted { color: hsl(var(--muted-foreground)); }
 
-.icon-secondary {
-  @apply text-secondary;
-}
-
-.icon-success {
-  @apply text-green-600;
-}
-
-.icon-warning {
-  @apply text-orange-600;
-}
-
-.icon-info {
-  @apply text-blue-600;
-}
-
-.icon-muted {
-  @apply text-muted-foreground;
-}
-
-/* ================= BADGE STYLES ================= */
+/* ================= BADGE STYLES (Soft Medical Tones) ================= */
 .badge-pink {
-  @apply bg-pink-500/10 text-pink-600 border-0;
+  background-color: hsl(330 100% 98%);
+  color: hsl(330 80% 45%);
+  border: 1px solid hsl(330 100% 94%);
 }
 
 .badge-blue {
-  @apply bg-blue-500/10 text-blue-600 border-0;
+  background-color: hsl(210 100% 97%);
+  color: hsl(210 100% 40%);
+  border: 1px solid hsl(210 100% 93%);
 }
 
 .badge-green {
-  @apply bg-green-500/10 text-green-600 border-0;
+  background-color: hsl(160 100% 97%);
+  color: hsl(160 80% 30%);
+  border: 1px solid hsl(160 100% 92%);
 }
 
 .badge-purple {
-  @apply bg-purple-500/10 text-purple-600 border-0;
+  background-color: hsl(270 100% 98%);
+  color: hsl(270 70% 50%);
+  border: 1px solid hsl(270 100% 95%);
 }
 
 .badge-orange {
-  @apply bg-orange-500/10 text-orange-600 border-0;
+  background-color: hsl(30 100% 97%);
+  color: hsl(30 90% 40%);
+  border: 1px solid hsl(30 100% 93%);
 }
 
 /* ================= HERO STYLES ================= */
 .hero-section {
   position: relative;
-  min-height: 90vh;
+  min-height: 85vh;
   display: flex;
   align-items: center;
   overflow: hidden;
+  background-color: hsl(var(--background));
 }
 
 .hero-bg-gradient {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, hsl(210 40% 11%) 0%, hsl(210 35% 22%) 50%, hsl(168 60% 25%) 100%);
+  background: radial-gradient(circle at top right, hsl(174 100% 95%), transparent),
+              radial-gradient(circle at bottom left, hsl(210 40% 94%), transparent);
 }
 
 .hero-glow-primary {
   position: absolute;
-  width: 18rem;
-  height: 18rem;
-  background: hsl(168 76% 36% / 0.2);
+  width: 25rem;
+  height: 25rem;
+  background: hsl(174 100% 29% / 0.1);
   border-radius: 9999px;
-  filter: blur(64px);
-  animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  filter: blur(80px);
+  animation: pulse 6s infinite;
 }
 
 .hero-glow-secondary {
   position: absolute;
-  width: 24rem;
-  height: 24rem;
-  background: hsl(24 95% 53% / 0.2);
+  width: 30rem;
+  height: 30rem;
+  background: hsl(199 89% 48% / 0.1);
   border-radius: 9999px;
-  filter: blur(64px);
-  animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  filter: blur(80px);
+  animation: pulse 8s infinite reverse;
 }

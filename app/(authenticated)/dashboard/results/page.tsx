@@ -47,6 +47,7 @@ import {
 } from "@/lib/api";
 import { IdeaValidationResult, getAllUserIdeaResults, reanalyzeIdea } from "@/app/actions/ai-actions/ideaAnalysisCreationAndResults";
 import { deleteIdeaFully } from "@/app/actions/ideaDeletionFully";
+import LoadingIcon from "@/components/icons/loading-icon";
 const getScoreColor = (score: number) => {
   if (score >= 80) return "text-green-600";
   if (score >= 60) return "text-orange-600";
@@ -214,7 +215,7 @@ export default function ValidationResultsPage() {
   };
 
   const completedResults = results.filter((r) => r.status === "processed");
-  const pendingResults = results.filter((r) => r.status === "pending");
+  const pendingResults = results.filter((r) => r.status === "pending" || r.status === "analyzing");
 
   const handleDownloadReport = () => {
     if (!selectedResult) return;
@@ -245,10 +246,11 @@ export default function ValidationResultsPage() {
         </Card>
       )}
 
-      {user && isLoading && (
+      {user && isLoading  && (
         <Card className="border-0 shadow-card">
-          <CardContent className="p-6">
-            <p className="text-muted-foreground">Loading your results...</p>
+          <CardContent className="p-6 flex flex-col items-center gap-4">
+            {/* <p className="text-muted-foreground">Loading your results...</p> */}
+            <LoadingIcon/>
           </CardContent>
         </Card>
       )}
@@ -287,7 +289,7 @@ export default function ValidationResultsPage() {
               </CardContent>
             </Card>
           ) : (
-            <div className="grid lg:grid-cols-3 gap-6">
+            <div className="grid lg:grid-cols-2 gap-6">
               {/* Results List */}
               <div className="space-y-4">
                 {completedResults.map((result) => (
@@ -400,29 +402,29 @@ export default function ValidationResultsPage() {
 
                     {/* Market Analysis */}
                     <Card className="border-0 shadow-card">
-                      <CardHeader>
+                      {/* <CardHeader>
                         <CardTitle className="font-display text-lg flex items-center gap-2">
                           <TrendingUp className="h-5 w-5 text-primary" />
                           Market Analysis
                         </CardTitle>
-                      </CardHeader>
+                      </CardHeader> */}
                       <CardContent>
                         <div className="grid md:grid-cols-3 gap-4">
                           <div className="p-4 rounded-xl bg-muted/50 text-center">
-                            <p className="text-sm text-muted-foreground">Market Size</p>
-                            <p className="font-display text-xl font-bold mt-1">
+                            <p className="text-xl font-bold  text-gray-900">Market Size</p>
+                            <p className="font-display   mt-1">
                               {selectedResult.marketAnalysis?.marketSize}
                             </p>
                           </div>
                           <div className="p-4 rounded-xl bg-muted/50 text-center">
-                            <p className="text-sm text-muted-foreground">Growth Rate</p>
-                            <p className="font-display text-xl font-bold mt-1 text-green-600">
+                            <p className="text-xl font-bold  text-gray-900">Growth Rate</p>
+                            <p className="font-display   mt-1 text-green-600">
                               {selectedResult.marketAnalysis?.growthRate}
                             </p>
                           </div>
                           <div className="p-4 rounded-xl bg-muted/50 text-center">
-                            <p className="text-sm text-muted-foreground">Target Potential</p>
-                            <p className="font-display text-xl font-bold mt-1">
+                            <p className="text-xl font-bold  text-gray-900">Target Potential</p>
+                            <p className="font-display   mt-1">
                               {selectedResult.marketAnalysis?.targetPotential}
                             </p>
                           </div>
@@ -522,7 +524,7 @@ export default function ValidationResultsPage() {
                     {/* Actions */}
                     <div className="flex gap-4">
                       <Button
-                        className="flex-1 gradient-primary"
+                        className="flex-1 gradient-primary cursor-pointer hover:opacity-90"
                         onClick={handleDownloadReport}
                         disabled={
                           !selectedResult ||
@@ -532,7 +534,7 @@ export default function ValidationResultsPage() {
                       >
                         {downloadReportMutation.isPending ? (
                           <>
-                            <span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                            <span className="mr-2 h-4 w-4  animate-spin rounded-full border-2 border-white border-t-transparent" />
                             Generating Report...
                           </>
                         ) : (
@@ -542,7 +544,7 @@ export default function ValidationResultsPage() {
                           </>
                         )}
                       </Button>
-                      <Button variant="outline" className="flex-1" asChild>
+                      <Button variant="outline" className="flex-1 hover:opacity-80" asChild>
                         <Link href={`/dashboard/results/full-analysis/${selectedResult.id}`}>
                           <Eye className="mr-2 h-4 w-4" />
                           Full Analysis

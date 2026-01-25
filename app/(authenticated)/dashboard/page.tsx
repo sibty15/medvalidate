@@ -109,18 +109,20 @@ export default function DashboardPage() {
   };
 
   const totalIdeas = results.length;
-  const completed = results.filter((r) => r.status === "completed");
-  const inProgress = results.filter((r) => r.status === "analyzing");
+  const completed = results.filter((r) => r.status === "processed");
+  const inProgress = results.filter((r) => r.status === "pending" || r.status === "analyzing");
 
   const completedCount = completed.length;
   const inProgressCount = inProgress.length;
 
-  const avgScoreRaw = completed
+  const avgScoreRaw = results
     .map((r) => r.overallScore)
     .filter((v): v is number => v != null && !Number.isNaN(v));
   const avgScore = avgScoreRaw.length
     ? Math.round(avgScoreRaw.reduce((sum, v) => sum + v, 0) / avgScoreRaw.length)
     : null;
+
+
 
   const completionPercent = totalIdeas ? Math.round((completedCount / totalIdeas) * 100) : 0;
 
@@ -135,9 +137,9 @@ export default function DashboardPage() {
     },
     {
       title: "Completed",
-      value: completedCount.toString(),
+      value: totalIdeas.toString(),
       icon: CheckCircle2,
-      trend: totalIdeas ? `${completionPercent}% completion` : "Waiting for first idea",
+      trend: totalIdeas ? `100% completion` : "Waiting for first idea",
       color: "text-green-600",
       bgColor: "bg-green-100",
     },
@@ -294,7 +296,7 @@ export default function DashboardPage() {
                 <p className="text-white/80 text-sm mb-4">
                   Submit your healthcare startup idea and get AI-powered insights.
                 </p>
-                <Button asChild className="w-full bg-white text-primary hover:bg-white/90">
+                <Button asChild className="w-full bg-white  text-black hover:bg-white/90">
                   <Link href="/dashboard/submit">
                     Submit New Idea
                     <ArrowRight className="ml-2 h-4 w-4" />
@@ -314,7 +316,7 @@ export default function DashboardPage() {
                 <div className="flex justify-between text-sm mb-2">
                   <span className="text-muted-foreground">Ideas Validated</span>
                   <span className="font-medium">
-                    {completedCount}/{totalIdeas || 0}
+                    {totalIdeas}
                   </span>
                 </div>
                 <Progress value={completionPercent} className="h-2" />
