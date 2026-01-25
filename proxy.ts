@@ -25,6 +25,6 @@ export async function proxy(request: NextRequest) {
 export const config = {
   matcher: [
     // Run proxy + auth check on all app routes except static assets.
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',"/","/about","/contact"
+    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',"/about","/contact"
   ],
 }
