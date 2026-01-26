@@ -138,7 +138,7 @@ export default function Home() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 bg-muted/50">
+      <section className="lg:w-[90%]! mx-auto py-16 bg-muted/50">
         <div className="container">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, i) => (
@@ -154,7 +154,7 @@ export default function Home() {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 lg:py-32">
+      <section className="lg:w-[90%]! mx-auto py-20 lg:py-32">
         <div className="container">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <span className="inline-flex items-center justify-center rounded-full border px-4 py-2 text-sm font-medium mb-4">
@@ -196,7 +196,7 @@ export default function Home() {
       </section>
 
       {/* How It Works */}
-      <section className="py-20 lg:py-32 bg-muted/30">
+      <section className="lg:w-[90%]! mx-auto py-20 lg:py-32 bg-muted/30">
         <div className="container">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <span className="inline-flex items-center justify-center rounded-full border px-4 py-2 text-sm font-medium mb-4">
@@ -249,7 +249,7 @@ export default function Home() {
       </section>
 
       {/* Pakistan Focus Section */}
-      <section className="py-20 lg:py-32">
+      <section className="lg:w-[90%]! mx-auto py-20 lg:py-32">
         <div className="container">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-8">
@@ -323,7 +323,7 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 lg:py-32 relative overflow-hidden w-full">
+      <section className=" mx-auto py-20 lg:py-32 relative overflow-hidden w-full">
         <div className="absolute inset-0 gradient-hero" />
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/30 rounded-full blur-3xl" />
         <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-secondary/30 rounded-full blur-3xl" />

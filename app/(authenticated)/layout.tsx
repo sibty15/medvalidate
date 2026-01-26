@@ -30,6 +30,9 @@ import {
   ChevronLeft,
   ChevronRight,
   User,
+  Stethoscope,
+  Compass,
+  Presentation,
 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -40,6 +43,11 @@ const sidebarLinks = [
   { title: 'Submit Idea', href: '/dashboard/submit', icon: Lightbulb },
   { title: 'Results', href: '/dashboard/results', icon: BarChart3 },
   { title: 'Settings', href: '/dashboard/settings', icon: Settings },
+
+
+  { title: 'Med Assistant', href: '/dashboard/med-assistant', icon: Stethoscope, commingSoon: true },
+  { title: 'Startups Explore', href: '/dashboard/startups-explore', icon: Compass , commingSoon: true },
+  { title: 'Pitch Deck Gen', href: '/dashboard/pitch-deck-gen', icon: Presentation , commingSoon: true },
 ];
 
 export default function DashboardLayout({
@@ -77,14 +85,32 @@ export default function DashboardLayout({
               onClick={() => isMobile && setIsMobileOpen(false)}
               className={cn(
                 'flex items-center gap-3 px-3 sm:px-4 py-3 rounded-lg text-sm font-medium transition-all duration-300 group',
-                isActive
+                isActive && !link.commingSoon
                   ? 'bg-[#16a286] text-white shadow-md shadow-[#16a286]/20 scale-105'
-                  : 'text-gray-700 hover:text-gray-900 hover:bg-gray-100',
+                  : link.commingSoon
+                    ? 'text-gray-400 hover:text-gray-700 hover:bg-gray-100'
+                    : 'text-gray-700 hover:text-gray-900 hover:bg-gray-100',
                 isCollapsed && !isMobile && 'justify-center px-3'
               )}
             >
-              <Icon className="h-5 w-5 shrink-0 group-hover:scale-110 transition-transform duration-200" />
-              {(!isCollapsed || isMobile) && <span>{link.title}</span>}
+              <Icon
+                className={cn(
+                  'h-5 w-5 shrink-0 group-hover:scale-110 transition-transform duration-200',
+                  link.commingSoon && !isActive && 'opacity-60'
+                )}
+              />
+              {(!isCollapsed || isMobile) && (
+                <span className="flex-1 flex items-center justify-between">
+                  <span className={cn(link.commingSoon && !isActive && 'opacity-70')}>
+                    {link.title}
+                  </span>
+                  {link.commingSoon && (
+                    <span className="ml-2 rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-amber-700">
+                      Soon
+                    </span>
+                  )}
+                </span>
+              )}
             </Link>
           );
 
